@@ -4,6 +4,7 @@ import com.example.projetogerenciamentocarros.model.Carro;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,8 @@ public class CarroDto {
     private String nome;
     private String cor;
     private String marca;
-    private Integer valor;
-    private Integer ano;
+    private BigDecimal valor;
+    private BigDecimal ano;
 
     public CarroDto() {
     }
@@ -48,11 +49,11 @@ public class CarroDto {
         return cor;
     }
 
-    public Integer getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public Integer getAno() {
+    public BigDecimal getAno() {
         return ano;
     }
 

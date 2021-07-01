@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.math.BigDecimal;
 
 public class CarroForm {      //Formulario para adiconar um carro no banco.
 
@@ -22,8 +23,8 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
     @NotBlank(message = "cor nao pode ser nulo ou vazio")
     private String cor;
 
-    private Integer valor;
-    private Integer ano;
+    private BigDecimal valor;
+    private BigDecimal ano;
 
 
     public String getChassi() {
@@ -50,19 +51,19 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
         this.cor = cor;
     }
 
-    public Integer getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
-    public Integer getAno() {
+    public BigDecimal getAno() {
         return ano;
     }
 
-    public void setAno(Integer ano) {
+    public void setAno(BigDecimal ano) {
         this.ano = ano;
     }
 

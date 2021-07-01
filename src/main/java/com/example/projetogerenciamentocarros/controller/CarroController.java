@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,80 +50,89 @@ public class CarroController {
     @Transactional
     public List<CarroDto> filtro(@RequestParam(value = "marca",required = false) String marca,    //pegar um parametro request da url
                                  @RequestParam(value = "nome",required = false) String nome,
-                                 @RequestParam(value = "cor",required = false) String cor,
-                                 @RequestParam(value = "valor",required = false)Integer valor,
-                                 @RequestParam(value = "ano",required = false) Integer ano){
+                                 @RequestParam(value = "cor",required = false) String cor){
 
-        if (marca==null & nome==null & cor==null & ano==null  & valor==null){              //se todos os parametros estiverem nulo, ele retorna todos os carros
+        if (marca==null & nome==null & cor==null){                          //se todos os parametros estiverem nulo, ele retorna todos os carros
             List<Carro> carro = carroRepository.findAll();
             CarroDto carroDtos = new CarroDto();
             return carroDtos.converter(carro);
-        }else if(nome==null & cor==null & ano==null  & valor==null){                       //filtra por marca
+        }else if(nome==null & cor==null) {                                  //MARCA
             List<Carro> carro = carroRepository.findByMarca(marca);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & cor==null & ano==null  & valor==null){                     //filtra por nome
+        }else if(marca==null & cor==null){                                   //NOME
             List<Carro> carro = carroRepository.findByNome(nome);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & nome==null & ano==null  & valor==null){                    //filtra por  cor
+        }else if(marca==null & nome==null){                                  //COR
             List<Carro> carro = carroRepository.findByCor(cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & nome==null & ano==null  & cor==null){                    //filtra por  valor
-            List<Carro> carro = carroRepository.findByValor(valor);
-            if (carro != null){
-                CarroDto carroDtos = new CarroDto();
-                return carroDtos.converter(carro);
-            }
-        }
-        else if(marca==null & nome==null & cor==null){                                  //filtra por ano
-            List<Carro> carro = carroRepository.findByAno(ano);
-            if (carro != null){
-                CarroDto carroDtos = new CarroDto();
-                return carroDtos.converter(carro);
-            }
-        }else if(nome==null & cor==null  & valor==null){                                  //MARCA-ANO
-            List<Carro> carro = carroRepository.findByMarcaAndAno(marca,ano);
-            if (carro != null){
-                CarroDto carroDtos = new CarroDto();
-                return carroDtos.converter(carro);
-            }
-        }else if(nome==null & ano==null & cor==null){                                  //MARCA-VALOR
-            List<Carro> carro = carroRepository.findByMarcaAndValor(marca,valor);
-            if (carro != null){
-                CarroDto carroDtos = new CarroDto();
-                return carroDtos.converter(carro);
-            }
-        }else if(nome==null & ano==null  & valor==null){                                  //MARCA-COR
+        }else if(nome==null){                                               //MARCA-COR    - COR-MARCA
             List<Carro> carro = carroRepository.findByMarcaAndCor(marca,cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(cor ==null & ano==null  & valor==null){                                  //MARCA-NOME
+        }else if(cor ==null){                                                 //MARCA-NOME   - NOME-MARCA
             List<Carro> carro = carroRepository.findByMarcaAndNome(marca,nome);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
+        }else if(marca==null){                                                 //NOME-COR   - COR-NOME
+            List<Carro> carro = carroRepository.findByNomeAndCor(nome,cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(marca!=null & nome!=null & cor!=null){                         //NOME-COR
+            List<Carro> carro = carroRepository.findByMarcaAndValorAndCor(marca,nome,cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
         }
-
-
-
-
-
         return null;
     }
 
 
 
+    private List<CarroDto> getCarroDtos(List<Carro> carro) {
+        if (carro != null){
+            CarroDto carroDtos = new CarroDto();
+            List<CarroDto> carroMaisCaro= new ArrayList<>();
+            carroMaisCaro.add(carroDtos.converter(carro).get(0));
+            return carroMaisCaro;
+        }
+        return null;
+    }
+
+
+
+    //CARRO MAIS CARO
+    @GetMapping("/cars/maiscaro")
+    @Transactional
+    public List<CarroDto> getMaisCaro(){
+        List<Carro> carro = carroRepository.OrderByValorDesc();
+        return getCarroDtos(carro);
+    }
+
+
+
+    //CARRO MAIS BARATO
+    @GetMapping("/cars/maisbarato")
+    @Transactional
+    public List<CarroDto> getMaisBarato(){
+        List<Carro> carro = carroRepository.OrderByValorAsc();
+        return getCarroDtos(carro);
+    }
 
 
 

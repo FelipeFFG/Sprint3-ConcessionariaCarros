@@ -1,15 +1,16 @@
 package com.example.projetogerenciamentocarros.repository;
 
+
+
+
 import com.example.projetogerenciamentocarros.model.Carro;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 
 
 
 public interface CarroRepository  extends JpaRepository<Carro,Long> {
+
 
 
     Carro findByChassi(String chassi);
@@ -19,11 +20,15 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findAll();
 
 
+    List<Carro> OrderByValorAsc();
+    List<Carro> OrderByValorDesc();
 
-    //FILTRO MARCA
+    //filtrar por todos os parametros
+    List<Carro>findByMarcaAndValorAndCor(String marca,String nome,String cor);
 
 
-
+    //NOME-COR
+    List<Carro> findByNomeAndCor(String nome,String cor);
 
     //MARCA-NOME
     List<Carro> findByMarcaAndNome(String marca, String nome);
@@ -31,11 +36,6 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     //MARCA-COR
     List<Carro> findByMarcaAndCor(String marca, String cor);
 
-    //MARCA-VALOR
-    List<Carro> findByMarcaAndValor(String marca, Integer valor);
-
-    //MARCA-ANO
-    List<Carro> findByMarcaAndAno(String marca, Integer Ano);
 
 
     //FILTROS POR UM PARAMETRO

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Carro {
@@ -28,8 +29,8 @@ public class Carro {
     private String cor;
 
 
-    private Integer valor;
-    private Integer ano;
+    private BigDecimal valor;
+    private BigDecimal ano;
 
 
     public String getMarca() {
@@ -43,7 +44,7 @@ public class Carro {
     public Carro() {
     }
 
-    public Carro(String chassi, String nome,String marca ,String cor, Integer valor, Integer ano) {
+    public Carro(String chassi, String nome,String marca ,String cor, BigDecimal valor, BigDecimal ano) {
         this.chassi = chassi;
         this.nome = nome;
         this.cor = cor;
@@ -84,19 +85,19 @@ public class Carro {
         this.cor = cor;
     }
 
-    public Integer getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
-    public Integer getAno() {
+    public BigDecimal getAno() {
         return ano;
     }
 
-    public void setAno(Integer ano) {
+    public void setAno(BigDecimal ano) {
         this.ano = ano;
     }
 }
