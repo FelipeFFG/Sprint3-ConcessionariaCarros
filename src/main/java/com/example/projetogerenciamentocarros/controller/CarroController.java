@@ -47,40 +47,77 @@ public class CarroController {
 
     @GetMapping("/cars")
     @Transactional
-    public List<CarroDto> filtro(@RequestParam(value = "marca",required = false) String marca,
+    public List<CarroDto> filtro(@RequestParam(value = "marca",required = false) String marca,    //pegar um parametro request da url
                                  @RequestParam(value = "nome",required = false) String nome,
                                  @RequestParam(value = "cor",required = false) String cor,
+                                 @RequestParam(value = "valor",required = false)Integer valor,
                                  @RequestParam(value = "ano",required = false) Integer ano){
 
-        if (marca==null & nome==null & cor==null & ano==null){
+        if (marca==null & nome==null & cor==null & ano==null  & valor==null){              //se todos os parametros estiverem nulo, ele retorna todos os carros
             List<Carro> carro = carroRepository.findAll();
             CarroDto carroDtos = new CarroDto();
             return carroDtos.converter(carro);
-        }else if(nome==null & cor==null & ano==null){
+        }else if(nome==null & cor==null & ano==null  & valor==null){                       //filtra por marca
             List<Carro> carro = carroRepository.findByMarca(marca);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & cor==null & ano==null){
+        }else if(marca==null & cor==null & ano==null  & valor==null){                     //filtra por nome
             List<Carro> carro = carroRepository.findByNome(nome);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & nome==null & ano==null){
+        }else if(marca==null & nome==null & ano==null  & valor==null){                    //filtra por  cor
             List<Carro> carro = carroRepository.findByCor(cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & nome==null & cor==null){
-            List<Carro> carro = carroRepository.findByAno(ano);
+        }else if(marca==null & nome==null & ano==null  & cor==null){                    //filtra por  valor
+            List<Carro> carro = carroRepository.findByValor(valor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
         }
+        else if(marca==null & nome==null & cor==null){                                  //filtra por ano
+            List<Carro> carro = carroRepository.findByAno(ano);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(nome==null & cor==null  & valor==null){                                  //MARCA-ANO
+            List<Carro> carro = carroRepository.findByMarcaAndAno(marca,ano);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(nome==null & ano==null & cor==null){                                  //MARCA-VALOR
+            List<Carro> carro = carroRepository.findByMarcaAndValor(marca,valor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(nome==null & ano==null  & valor==null){                                  //MARCA-COR
+            List<Carro> carro = carroRepository.findByMarcaAndCor(marca,cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(cor ==null & ano==null  & valor==null){                                  //MARCA-NOME
+            List<Carro> carro = carroRepository.findByMarcaAndNome(marca,nome);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+
+
+
+
         return null;
     }
 
