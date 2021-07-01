@@ -20,11 +20,29 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findAll();
 
 
-    List<Carro> OrderByValorAsc();
-    List<Carro> OrderByValorDesc();
 
     //filtrar por todos os parametros
     List<Carro>findByMarcaAndValorAndCor(String marca,String nome,String cor);
+
+
+
+
+
+    //ORDENACAO POR NOME
+    List<Carro> OrderByNomeAsc();
+    List<Carro> OrderByNomeDesc();
+
+    //ORDENACAO POR VALOR
+    List<Carro> OrderByValorAsc();
+    List<Carro> OrderByValorDesc();
+
+    //ORDENACAO POR ANO
+    List<Carro> OrderByAnoAsc();
+    List<Carro> OrderByAnoDesc();
+
+
+
+
 
 
     //NOME-COR

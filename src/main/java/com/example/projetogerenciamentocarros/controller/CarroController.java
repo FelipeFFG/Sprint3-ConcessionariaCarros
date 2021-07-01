@@ -115,7 +115,6 @@ public class CarroController {
     }
 
 
-
     //CARRO MAIS CARO
     @GetMapping("/cars/maiscaro")
     @Transactional
@@ -124,8 +123,6 @@ public class CarroController {
         return getCarroDtos(carro);
     }
 
-
-
     //CARRO MAIS BARATO
     @GetMapping("/cars/maisbarato")
     @Transactional
@@ -133,6 +130,62 @@ public class CarroController {
         List<Carro> carro = carroRepository.OrderByValorAsc();
         return getCarroDtos(carro);
     }
+
+    //ORDENCAO POR NOME
+    @GetMapping("/cars/nomeasc")
+    @Transactional
+    public List<CarroDto> getOrderByNomeAsc(){
+        List<Carro> carro = carroRepository.OrderByNomeAsc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+    @GetMapping("/cars/nomedesc")
+    @Transactional
+    public List<CarroDto> getOrderByNomeDesc(){
+        List<Carro> carro = carroRepository.OrderByNomeDesc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+
+    //ORDENCAO POR VALOR
+    @GetMapping("/cars/valorasc")
+    @Transactional
+    public List<CarroDto> getOrderByValorAsc(){
+        List<Carro> carro = carroRepository.OrderByValorAsc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+    @GetMapping("/cars/valordesc")
+    @Transactional
+    public List<CarroDto> getOrderByValorDesc(){
+        List<Carro> carro = carroRepository.OrderByValorDesc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+
+
+    //ORDENACAO POR ANO
+    @GetMapping("/cars/anoasc")
+    @Transactional
+    public List<CarroDto> getOrderByAnosc(){
+        List<Carro> carro = carroRepository.OrderByAnoAsc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+    @GetMapping("/cars/anodesc")
+    @Transactional
+    public List<CarroDto> getOrderByAnoDesc(){
+        List<Carro> carro = carroRepository.OrderByAnoDesc();
+        CarroDto carroDtos = new CarroDto();
+        return carroDtos.converter(carro);
+    }
+
+
 
 
 
