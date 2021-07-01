@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -50,49 +51,221 @@ public class CarroController {
     @Transactional
     public List<CarroDto> filtro(@RequestParam(value = "marca",required = false) String marca,    //pegar um parametro request da url
                                  @RequestParam(value = "nome",required = false) String nome,
-                                 @RequestParam(value = "cor",required = false) String cor){
+                                 @RequestParam(value = "cor",required = false) String cor,
+                                 @RequestParam(value = "ordenaNome",defaultValue = "null",required = false)String ordenaNome,
+                                 @RequestParam(value = "ordenaValor",defaultValue = "null",required = false)String ordenaValor,
+                                 @RequestParam(value = "ordenaAnoFabricacao",required = false)String ordenaAnoFabricacao){
 
-        if (marca==null & nome==null & cor==null){                          //se todos os parametros estiverem nulo, ele retorna todos os carros
+        if (marca==null & nome==null & cor==null & ordenaNome.equals("null") & ordenaValor.equals("null")){                 //se todos os parametros estiverem nulo, ele retorna todos os carros
             List<Carro> carro = carroRepository.findAll();
             CarroDto carroDtos = new CarroDto();
             return carroDtos.converter(carro);
-        }else if(nome==null & cor==null) {                                  //MARCA
+        }
+
+ //-----------------------------------------------------------------------------------------------------------------------
+
+        else if(nome==null & cor==null & ordenaNome.equals("null") & ordenaValor.equals("null")) {                          //MARCA
             List<Carro> carro = carroRepository.findByMarca(marca);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & cor==null){                                   //NOME
+        }else if(nome==null & cor==null & ordenaNome.equals("asc")) {                          //MARCA  OrdenaNome-ASK
+            List<Carro> carro = carroRepository.findByMarcaOrderByNomeAsc(marca);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(nome==null & cor==null & ordenaNome.equals("desc")) {                         //MARCA  OrdenaNome-Desc
+            List<Carro> carro = carroRepository.findByMarcaOrderByNomeDesc(marca);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+
+        else if(nome==null & cor==null & ordenaValor.equals("asc")) {                          //MARCA  ordenaValor-ASK
+            List<Carro> carro = carroRepository.findByMarcaOrderByValorAsc(marca);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }else if(nome==null & cor==null & ordenaValor.equals("desc")) {                         //MARCA  ordenaValor-Desc
+            List<Carro> carro = carroRepository.findByMarcaOrderByValorDesc(marca);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        
+//-----------------------------------------------------------------------------------------------------------------------
+
+        else if(marca==null & cor==null  & ordenaNome.equals("null") & ordenaValor.equals("null")){     //NOME
             List<Carro> carro = carroRepository.findByNome(nome);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null & nome==null){                                  //COR
+        }
+
+        else if(marca==null & cor==null & ordenaValor.equals("asc")) {                                   //NOME  ordenaValor-ASK
+            List<Carro> carro = carroRepository.findByNomeOrderByValorAsc(nome);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(marca==null & cor==null & ordenaValor.equals("desc")) {                                  //NOME  ordenaValor-Desc
+            List<Carro> carro = carroRepository.findByNomeOrderByValorDesc(nome);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+        else if(nome==null & marca==null & ordenaNome.equals("null") & ordenaValor.equals("null")){      //COR
             List<Carro> carro = carroRepository.findByCor(cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(nome==null){                                               //MARCA-COR    - COR-MARCA
+        }
+        else if(nome==null & marca==null & ordenaNome.equals("asc")) {                          //COR-  OrdenaNome-ASK
+            List<Carro> carro = carroRepository.findByCorOrderByNomeAsc(cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(nome==null & marca==null & ordenaNome.equals("desc")) {                         //COR-  OrdenaNome-Desc
+            List<Carro> carro = carroRepository.findByCorOrderByNomeDesc(cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+        else if(nome==null & marca==null & ordenaValor.equals("asc")) {                          //COR  ordenaValor-ASK
+            List<Carro> carro = carroRepository.findByCorOrderByValorAsc(cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(nome==null & marca==null & ordenaValor.equals("desc")) {                         //NOME  ordenaValor-Desc
+            List<Carro> carro = carroRepository.findByCorOrderByValorDesc(cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+        else if(nome==null & ordenaNome.equals("null") & ordenaValor.equals("null")){                //MARCA-COR    - COR-MARCA
             List<Carro> carro = carroRepository.findByMarcaAndCor(marca,cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(cor ==null){                                                 //MARCA-NOME   - NOME-MARCA
+        }
+        else if(nome==null & ordenaNome.equals("asc")) {                                            //MARCA-COR OrdenaNome-ASK
+            List<Carro> carro = carroRepository.findByMarcaAndCorOrderByNomeAsc(marca, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(nome==null & ordenaNome.equals("desc")) {                                           //MARCA-COR-OrdenaNome-Desc
+            List<Carro> carro = carroRepository.findByMarcaAndCorOrderByNomeDesc( marca, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+        else if(nome==null & ordenaValor.equals("asc")) {                                            //MARCA-COR OrdenaValor-ASK
+            List<Carro> carro = carroRepository.findByMarcaAndCorOrderByValorAsc(marca, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(nome==null & ordenaValor.equals("desc")) {                                           //MARCA-COR-OrdenaValor-Desc
+            List<Carro> carro = carroRepository.findByMarcaAndCorOrderByValorDesc( marca, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+        else if(cor ==null& ordenaNome.equals("null")& ordenaValor.equals("null")){                 //MARCA-NOME   - NOME-MARCA
             List<Carro> carro = carroRepository.findByMarcaAndNome(marca,nome);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca==null){                                                 //NOME-COR   - COR-NOME
+        }
+
+
+
+        else if(cor==null & ordenaValor.equals("asc")) {                                            //MARCA-NOME OrdenaValor-ASK
+            List<Carro> carro = carroRepository.findByMarcaAndNomeOrderByValorAsc(marca, nome);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(cor==null & ordenaValor.equals("desc")) {                                           //MARCA-NOME  OrdenaValor-Desc
+            List<Carro> carro = carroRepository.findByMarcaAndNomeOrderByValorDesc( marca, nome);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+ //-----------------------------------------------------------------------------------------------------------------------
+
+
+        else if(marca==null & ordenaValor.equals("null")){                                            //NOME-COR   - COR-NOME
             List<Carro> carro = carroRepository.findByNomeAndCor(nome,cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
                 return carroDtos.converter(carro);
             }
-        }else if(marca!=null & nome!=null & cor!=null){                         //NOME-COR
+        }
+
+        else if(marca==null & ordenaValor.equals("asc")) {                                            //NOME-CR OrdenaValor-ASK
+            List<Carro> carro = carroRepository.findByNomeAndCorOrderByValorAsc(nome, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+        else if(marca==null & ordenaValor.equals("desc")) {                                           //NOME-COR  OrdenaValor-Desc
+            List<Carro> carro = carroRepository.findByNomeAndCorOrderByValorDesc(nome, cor);
+            if (carro != null){
+                CarroDto carroDtos = new CarroDto();
+                return carroDtos.converter(carro);
+            }
+        }
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+        else if(marca!=null & nome!=null & cor!=null){                         //NOME-COR-MARCA
             List<Carro> carro = carroRepository.findByMarcaAndValorAndCor(marca,nome,cor);
             if (carro != null){
                 CarroDto carroDtos = new CarroDto();
@@ -114,7 +287,6 @@ public class CarroController {
         return null;
     }
 
-
     //CARRO MAIS CARO
     @GetMapping("/cars/maiscaro")
     @Transactional
@@ -130,64 +302,5 @@ public class CarroController {
         List<Carro> carro = carroRepository.OrderByValorAsc();
         return getCarroDtos(carro);
     }
-
-    //ORDENCAO POR NOME
-    @GetMapping("/cars/nomeasc")
-    @Transactional
-    public List<CarroDto> getOrderByNomeAsc(){
-        List<Carro> carro = carroRepository.OrderByNomeAsc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-    @GetMapping("/cars/nomedesc")
-    @Transactional
-    public List<CarroDto> getOrderByNomeDesc(){
-        List<Carro> carro = carroRepository.OrderByNomeDesc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-
-    //ORDENCAO POR VALOR
-    @GetMapping("/cars/valorasc")
-    @Transactional
-    public List<CarroDto> getOrderByValorAsc(){
-        List<Carro> carro = carroRepository.OrderByValorAsc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-    @GetMapping("/cars/valordesc")
-    @Transactional
-    public List<CarroDto> getOrderByValorDesc(){
-        List<Carro> carro = carroRepository.OrderByValorDesc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-
-
-    //ORDENACAO POR ANO
-    @GetMapping("/cars/anoasc")
-    @Transactional
-    public List<CarroDto> getOrderByAnosc(){
-        List<Carro> carro = carroRepository.OrderByAnoAsc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-    @GetMapping("/cars/anodesc")
-    @Transactional
-    public List<CarroDto> getOrderByAnoDesc(){
-        List<Carro> carro = carroRepository.OrderByAnoDesc();
-        CarroDto carroDtos = new CarroDto();
-        return carroDtos.converter(carro);
-    }
-
-
-
-
-
 
 }
