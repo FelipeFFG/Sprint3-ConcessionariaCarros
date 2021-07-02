@@ -89,6 +89,11 @@ public class CarroController {
             return buildCarro(carro);
         }
 
+        else if(nome==null & cor==null & ordenaNome.equals("true") & ordenaValor.equals("true")) {  //MARCA  NOME-VALOR-Desc
+            List<Carro> carro = carroRepository.findByMarcaOrderByValorDescNomeDesc(marca);
+            return buildCarro(carro);
+        }
+
 //-----------------------------------------------------------------------------------------------------------------------
 
         else if(marca==null & cor==null  & ordenaNome.equals("null") & ordenaValor.equals("null") & ordenaAno.equals("null")){     //NOME

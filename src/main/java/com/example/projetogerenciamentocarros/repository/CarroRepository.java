@@ -30,6 +30,12 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findByMarcaOrderByAnoAsc(String marca);
     List<Carro> findByMarcaOrderByAnoDesc(String marca);
 
+
+    List<Carro> findByMarcaOrderByValorDescNomeDesc(String marca);
+
+
+
+
     //COR
     List<Carro> findByCor(String cor);
     List<Carro> findByCorOrderByNomeAsc(String cor);
@@ -42,9 +48,6 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     //NOME
     List<Carro> findByNomeOrderByValorAsc(String nome);
     List<Carro> findByNomeOrderByValorDesc(String nome);
-
-    List<Carro> findByNomeOrderByNomeAsc(String nome);
-    List<Carro> findByNomeOrderByNomeDesc(String nome);
     List<Carro> findByNome(String nome);
 
     List<Carro> findByNomeOrderByAnoAsc(String nome);
