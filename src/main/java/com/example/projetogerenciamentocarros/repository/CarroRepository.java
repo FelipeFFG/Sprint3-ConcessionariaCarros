@@ -10,9 +10,6 @@ import java.util.List;
 
 
 public interface CarroRepository  extends JpaRepository<Carro,Long> {
-
-
-
     Carro findByChassi(String chassi);
 
 
@@ -39,7 +36,8 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findByCorOrderByNomeDesc(String cor);
     List<Carro> findByCorOrderByValorAsc(String cor);
     List<Carro> findByCorOrderByValorDesc(String cor);
-
+    List<Carro> findByCorOrderByAnoAsc(String cor);
+    List<Carro> findByCorOrderByAnoDesc(String cor);
 
     //NOME
     List<Carro> findByNomeOrderByValorAsc(String nome);
@@ -49,35 +47,13 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findByNomeOrderByNomeDesc(String nome);
     List<Carro> findByNome(String nome);
 
-
     List<Carro> findByNomeOrderByAnoAsc(String nome);
     List<Carro> findByNomeOrderByAnoDesc(String nome);
 
 
-
-
-
-
-
-
-
-
-    //ORDENACAO POR NOME
-    List<Carro> OrderByNomeAsc();
-    List<Carro> OrderByNomeDesc();
-
     //ORDENACAO POR VALOR
     List<Carro> OrderByValorAsc();
     List<Carro> OrderByValorDesc();
-
-    //ORDENACAO POR ANO
-    List<Carro> OrderByAnoAsc();
-    List<Carro> OrderByAnoDesc();
-
-
-
-
-
 
     //NOME-COR
     List<Carro> findByNomeAndCor(String nome,String cor);
@@ -85,19 +61,17 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findByNomeAndCorOrderByValorAsc(String marca,String nome);
     List<Carro> findByNomeAndCorOrderByValorDesc(String marca,String nome);
 
-
-
+    List<Carro> findByNomeAndCorOrderByAnoAsc(String marca,String nome);
+    List<Carro> findByNomeAndCorOrderByAnoDesc(String marca,String nome);
 
     //MARCA-NOME
     List<Carro> findByMarcaAndNome(String marca, String nome);
-    List<Carro> findByMarcaAndNomeOrderByNomeDesc(String marca,String nome);
-    List<Carro> findByMarcaAndNomeOrderByNomeAsc(String marca,String nome);
 
-    List<Carro> findByMarcaAndCorOrderByValorDesc(String marca,String cor);
-    List<Carro> findByMarcaAndCorOrderByValorAsc(String marca,String cor);
+    List<Carro> findByMarcaAndNomeOrderByValorDesc(String marca,String cor);
+    List<Carro> findByMarcaAndNomeOrderByValorAsc(String marca,String cor);
 
-    List<Carro> findByMarcaAndNomeOrderByValorAsc(String marca,String nome);
-    List<Carro> findByMarcaAndNomeOrderByValorDesc(String marca,String nome);
+    List<Carro> findByMarcaAndNomeOrderByAnoAsc(String marca,String nome);
+    List<Carro> findByMarcaAndNomeOrderByAnoDesc(String marca,String nome);
 
 
     //MARCA-COR
@@ -105,11 +79,20 @@ public interface CarroRepository  extends JpaRepository<Carro,Long> {
     List<Carro> findByMarcaAndCorOrderByNomeAsc(String marca,String cor);
     List<Carro> findByMarcaAndCor(String marca, String cor);
 
+    List<Carro> findByMarcaAndCorOrderByAnoAsc(String marca,String cor);
+    List<Carro> findByMarcaAndCorOrderByAnoDesc(String marca,String cor);
+
+    List<Carro> findByMarcaAndCorOrderByValorDesc(String marca,String cor);
+    List<Carro> findByMarcaAndCorOrderByValorAsc(String marca,String cor);
+
+
+
+
+
+
 
 
     //FILTROS POR UM PARAMETRO
-
-
     //fultrar por valor
     List<Carro> findByValor(Integer valor);
     //filtra por ano
