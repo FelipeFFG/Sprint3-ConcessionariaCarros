@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Entity
@@ -44,13 +44,13 @@ public class Carro {
     public Carro() {
     }
 
-    public Carro(String chassi, String nome,String marca ,String cor, BigDecimal valor, BigDecimal ano) {
+    public Carro(String chassi, String nome, String marca, String cor, BigDecimal valor, BigDecimal ano) {
         this.chassi = chassi;
         this.nome = nome;
         this.cor = cor;
         this.valor = valor;
         this.ano = ano;
-        this.marca =marca;
+        this.marca = marca;
     }
 
     public Long getId() {

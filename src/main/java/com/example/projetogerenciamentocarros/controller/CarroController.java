@@ -13,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-
-
 
 @RestController
 @RequestMapping("/api")
@@ -30,7 +29,7 @@ public class CarroController {
     public List<CarroDto> lista() {
         List<Carro> carros = carroRepository.findAll();
         CarroDto carroDto = new CarroDto();
-        return carroDto.converter(carros);
+        return CarroDto.converter(carros);
     }
 
     @PostMapping
@@ -52,43 +51,38 @@ public class CarroController {
                                  @RequestParam(value = "nome", required = false) String nome,   //Filtrar por nome.
                                  @RequestParam(value = "cor", required = false) String cor,     //Filtrar por cor.
                                  Pageable pageable) {
-        if (marca==null & nome==null & cor == null){    //MARCA NOME COR    -Paremetros nulos retornal todos os valores.
+        if (marca == null & nome == null & cor == null) {    //MARCA NOME COR    -Paremetros nulos retornal todos os valores.
             List<Carro> carro = carroRepository.findAll();
-            CarroDto carroDto = new CarroDto();
-            return carroDto.converter(carro);
-        }else if(marca!=null  & nome==null & cor == null){  //MARCA    -filtra por marca
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))),pageable);
+            return CarroDto.converter(carro);
+        } else if (marca != null & nome == null & cor == null) {  //MARCA    -filtra por marca
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))), pageable);
             return buildCars(carro);
-        }else if(marca!=null  & nome!=null & cor == null){  //MARCA & NOME
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)),pageable);
+        } else if (marca != null & nome != null & cor == null) {  //MARCA & NOME
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)), pageable);
             return buildCars(carro);
-        }else if(marca==null  & nome!=null & cor == null){  //NOME
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))),pageable);
+        } else if (marca == null & nome != null & cor == null) {  //NOME
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))), pageable);
             return buildCars(carro);
-        }else if(marca==null  & nome!=null & cor != null){  //NOME COR
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))).and(SpecificationCarro.cor(cor)),pageable);
+        } else if (marca == null & nome != null & cor != null) {  //NOME COR
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))).and(SpecificationCarro.cor(cor)), pageable);
             return buildCars(carro);
-        }else if(marca==null  & nome==null & cor != null){  //COR
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.cor(cor))),pageable);
+        } else if (marca == null & nome == null & cor != null) {  //COR
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.cor(cor))), pageable);
             return buildCars(carro);
-        }
-        else if(marca!=null  & nome==null & cor != null){  //COR & MARCA
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.cor(cor)),pageable);
+        } else if (marca != null & nome == null & cor != null) {  //COR & MARCA
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.cor(cor)), pageable);
             return buildCars(carro);
-        } else if(marca!=null  & nome!=null & cor != null){  //MARCA COR E NOME
-            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)).and(SpecificationCarro.cor(cor)),pageable);
+        } else if (marca != null & nome != null & cor != null) {  //MARCA COR E NOME
+            Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)).and(SpecificationCarro.cor(cor)), pageable);
             return buildCars(carro);
         }
         return null;
     }
 
     //Funcao para transformar Page em List de carrosDto
-    public List<CarroDto> buildCars(Page<Carro> carro){
-        List<Carro> carros =  carro.toList();
-        CarroDto carroDto = new CarroDto();
-        return carroDto.converter(carros);
+    public List<CarroDto> buildCars(Page<Carro> carro) {
+        List<Carro> carros = carro.toList();
+        return CarroDto.converter(carros);
     }
-
-
 
 }

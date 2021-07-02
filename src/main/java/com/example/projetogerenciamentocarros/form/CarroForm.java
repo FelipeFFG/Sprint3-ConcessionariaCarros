@@ -2,12 +2,9 @@ package com.example.projetogerenciamentocarros.form;
 
 import com.example.projetogerenciamentocarros.model.Carro;
 import com.example.projetogerenciamentocarros.repository.CarroRepository;
+
 import javax.validation.constraints.NotBlank;
-
 import java.math.BigDecimal;
-
-
-
 
 public class CarroForm {      //Formulario para adiconar um carro no banco.
 
@@ -25,7 +22,6 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
 
     private BigDecimal valor;
     private BigDecimal ano;
-
 
     public String getChassi() {
         return chassi;
@@ -75,11 +71,11 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
         this.marca = marca;
     }
 
-    public Carro coverter(CarroRepository carroRepository) {
+    public Carro coverter(CarroRepository carroRepository) {            //confere se nao tem umcarro com o mesmo chassi no banco de dados.
         Carro carro = carroRepository.findByChassi(this.chassi);
-        if (carro == null){
-            return new Carro(this.chassi, this.nome,this.marca, this.cor, this.valor, this.ano);
-        }else
+        if (carro == null) {
+            return new Carro(this.chassi, this.nome, this.marca, this.cor, this.valor, this.ano);
+        } else
             return null;
     }
 
