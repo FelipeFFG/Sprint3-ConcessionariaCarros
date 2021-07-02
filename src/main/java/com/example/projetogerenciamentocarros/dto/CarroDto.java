@@ -1,15 +1,11 @@
 package com.example.projetogerenciamentocarros.dto;
 
 import com.example.projetogerenciamentocarros.model.Carro;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CarroDto {
-
 
     private String chassi;
     private String nome;
@@ -30,12 +26,9 @@ public class CarroDto {
         this.ano = carro.getAno();
     }
 
-
     public static List<CarroDto> converter(List<Carro> carros){    //converte uma lista de carros em carrosDto
         return carros.stream().map(CarroDto::new).collect(Collectors.toList());
     }
-
-
 
     public String getChassi() {
         return chassi;
