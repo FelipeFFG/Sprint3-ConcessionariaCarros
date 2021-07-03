@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -25,14 +27,7 @@ public class CarroController {
     @Autowired
     private CarroRepository carroRepository;
 
-    @GetMapping("")
-    public List<CarroDto> lista() {
-        List<Carro> carros = carroRepository.findAll();
-        CarroDto carroDto = new CarroDto();
-        return CarroDto.converter(carros);
-    }
-
-    @PostMapping
+    @PostMapping("/cars")
     @Transactional
     public ResponseEntity<CarroDto> cadastrar(@Valid @RequestBody CarroForm form, UriComponentsBuilder uriBuilder) {
         Carro carro = form.coverter(carroRepository);
@@ -40,9 +35,8 @@ public class CarroController {
             carroRepository.save(carro);
             URI uri = uriBuilder.path("/api/cars/{id}").buildAndExpand(carro.getId()).toUri();
             return ResponseEntity.created(uri).body(new CarroDto(carro));
-        } else
-            System.out.println("ja existe um carro com esse chassi");
-        return null;
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/cars")
@@ -52,8 +46,8 @@ public class CarroController {
                                  @RequestParam(value = "cor", required = false) String cor,     //Filtrar por cor.
                                  Pageable pageable) {
         if (marca == null & nome == null & cor == null) {    //MARCA NOME COR    -Paremetros nulos retornal todos os valores.
-            List<Carro> carro = carroRepository.findAll();
-            return CarroDto.converter(carro);
+            Page<Carro> carro = carroRepository.findAll(pageable);
+            return buildCars(carro);
         } else if (marca != null & nome == null & cor == null) {  //MARCA    -filtra por marca
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))), pageable);
             return buildCars(carro);
@@ -87,11 +81,12 @@ public class CarroController {
 
     //PEGAR O CARRO MIAS CARO.
     @GetMapping("/cars/maiscaro")
-    public List<CarroDto> maisCaro(){
-        List<Carro> carro = carroRepository.findByValor(carroRepository.max()); //FAZ UMA BUSCA POR CARROS QUE POSSUEM O VALOR MAXIMO DA TABELA
+    public List<CarroDto> maiscaro() {
+        List<Carro> carro = carroRepository.findByValor(carroRepository.max()); //FAZ UMA BUSCA POR CARROS QUE POSSUEM O VALOR MIN DA TABELA
         CarroDto carroDto = new CarroDto();
         return carroDto.converter(carro);
     }
+
 
     //PEGAR O CARRO MAIS BARATO.
     @GetMapping("/cars/maisbarato")
@@ -100,6 +95,5 @@ public class CarroController {
         CarroDto carroDto = new CarroDto();
         return carroDto.converter(carro);
     }
-
 
 }
