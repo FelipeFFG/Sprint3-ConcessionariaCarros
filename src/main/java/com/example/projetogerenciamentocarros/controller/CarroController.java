@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,16 +28,31 @@ public class CarroController {
     @Autowired
     private CarroRepository carroRepository;
 
-    @PostMapping("/cars")
+
+    @PostMapping("/cars/individual")            //metodo post para adicionar apenas um carros.
     @Transactional
-    public ResponseEntity<CarroDto> cadastrar(@Valid @RequestBody CarroForm form, UriComponentsBuilder uriBuilder) {
-        Carro carro = form.coverter(carroRepository);
-        if (carro != null) {
-            carroRepository.save(carro);
-            URI uri = uriBuilder.path("/api/cars/{id}").buildAndExpand(carro.getId()).toUri();
-            return ResponseEntity.created(uri).body(new CarroDto(carro));
+    public List<CarroDto> cadastrar(@Valid @RequestBody CarroForm form, UriComponentsBuilder uriBuilder) {
+          Carro carro = form.coverter(carroRepository);
+          carroRepository.save(carro);
+          List<Carro> carros = new ArrayList<>();
+          carros.add(carro);
+          return CarroDto.converter(carros);
         }
-        return ResponseEntity.notFound().build();
+
+
+    @PostMapping("/cars")                      //metodo post para adicionar uma lista de carros.
+    @Transactional
+    public List<CarroDto> cadastrar(@Valid @RequestBody List<CarroForm> form, UriComponentsBuilder uriBuilder) {
+        if (form.size()!=0){
+            List<Carro> a =new ArrayList<>();
+            for(int i =0;i<form.size();i++){
+                Carro carro = form.get(i).coverter(carroRepository);
+                carroRepository.save(carro);
+                a.add(carro);
+            }
+            return CarroDto.converter(a);
+        }
+        return null;
     }
 
     @GetMapping("/cars")

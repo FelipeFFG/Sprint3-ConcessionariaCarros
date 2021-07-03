@@ -27,6 +27,8 @@ public class CarroDto {
         this.ano = carro.getAno();
     }
 
+
+
     public static List<CarroDto> converter(List<Carro> carros) {    //converte uma lista de carros em carrosDto
         return carros.stream().map(CarroDto::new).collect(Collectors.toList());
     }
