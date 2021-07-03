@@ -1,5 +1,6 @@
 package com.example.projetogerenciamentocarros.form;
 
+import com.example.projetogerenciamentocarros.errors.ErrorToAddValues;
 import com.example.projetogerenciamentocarros.model.Carro;
 import com.example.projetogerenciamentocarros.repository.CarroRepository;
 
@@ -71,12 +72,12 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
         this.marca = marca;
     }
 
-    public Carro coverter(CarroRepository carroRepository) {            //confere se nao tem umcarro com o mesmo chassi no banco de dados.
+    public Carro coverter(CarroRepository carroRepository) {                //verifica se nao tem um carro com o mesmo chassi no banco de dados.
         Carro carro = carroRepository.findByChassi(this.chassi);
         if (carro == null) {
             return new Carro(this.chassi, this.nome, this.marca, this.cor, this.valor, this.ano);
         } else
-            return null;
+            throw new ErrorToAddValues("Nao foi possivel adicionar o veiculo ao nosso banco de dados, por favor , certifique se os atributos passados estao certos.");
     }
 
 }

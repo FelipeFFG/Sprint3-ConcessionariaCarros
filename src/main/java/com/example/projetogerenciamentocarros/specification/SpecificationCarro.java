@@ -22,18 +22,4 @@ public class SpecificationCarro {  //Esta classe é a especificação do carro, 
         return ((root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.like(root.get("cor"), "%" + cor + "%"));
     }
-
-    //VALOR DO CARRO
-    public static Specification<Carro> valor(Integer valor) {
-        return ((root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("valor"), "%" + valor + "%"));
-    }
-
-    //ANO DO CARRO
-    public static Specification<Carro> ano(Integer ano) {
-        return ((root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("ano"), "%" + ano + "%"));
-    }
-
-
 }
