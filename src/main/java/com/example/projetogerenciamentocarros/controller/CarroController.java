@@ -85,4 +85,21 @@ public class CarroController {
         return CarroDto.converter(carros);
     }
 
+    //PEGAR O CARRO MIAS CARO.
+    @GetMapping("/cars/maiscaro")
+    public List<CarroDto> maisCaro(){
+        List<Carro> carro = carroRepository.findByValor(carroRepository.max()); //FAZ UMA BUSCA POR CARROS QUE POSSUEM O VALOR MAXIMO DA TABELA
+        CarroDto carroDto = new CarroDto();
+        return carroDto.converter(carro);
+    }
+
+    //PEGAR O CARRO MAIS BARATO.
+    @GetMapping("/cars/maisbarato")
+    public List<CarroDto> maisbarato(){
+        List<Carro> carro = carroRepository.findByValor(carroRepository.min()); //FAZ UMA BUSCA POR CARROS QUE POSSUEM O VALOR MIN DA TABELA
+        CarroDto carroDto = new CarroDto();
+        return carroDto.converter(carro);
+    }
+
+
 }
