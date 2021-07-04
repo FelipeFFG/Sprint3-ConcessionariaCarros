@@ -1,6 +1,7 @@
 package com.example.projetogerenciamentocarros.repository;
 
 import com.example.projetogerenciamentocarros.model.Carro;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
