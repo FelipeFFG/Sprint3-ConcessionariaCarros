@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: API Concessionária de Carros-SPRINT3
+  description: API para controle de carros de uma concessinária,foi utilizado banco de dados mariadb-sql, com back-end java com persistencia com JPA.
+  version: 0.0.1
+externalDocs:
+  description: Link para o repositorio do projeto
+  url: https://github.com/FelipeFFG/Sprint3-ConcessionariaCarros
+  
+  
+servers:
+- url:  http://localhost:8080
+  description: API Concessionaria
+
+
+tags:
+- name: Cars
+
+paths:
+  /api/cars:
+    post:
+      summary: Cria uma lista de carros a serem adicionados
+      description: "Esta funcionalidade, permite adicionar um array de objetos a serem inseridos no banco de dados."
+      tags: 
+      - Cars
+      requestBody: 
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Carros"
+                
+      responses:
+         200:
+          description: Sucesso
+          content:
+            application/json:
+             schema:
+                $ref: "#/components/schemas/Carros"    
+                
+         400:
+            description: Erro ao char um veiculo com esses filtros.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Erros1"           
+                
+    get:
+      summary: Filtra e ordena os carros
+      description: "Esta funcionalidade nos permite filtrar pelos atributos:nome cor e marca, e ordenar por todos os atributos dos carros de forma ascendente e descendente"
+      tags: 
+      - Cars
+      parameters:
+      - name: nome
+        in: query
+        schema: 
+          type: string
+        required: false
+      - name: cor
+        in: query
+        schema: 
+          type: string
+        required: false     
+      - name: marca
+        in: query
+        schema: 
+          type: string
+        required: false
+      - name: sort
+        in: query
+        schema: 
+          type: string
+        required: false   
+      - name: maiscaro
+        in: query
+        schema: 
+          type: string
+        required: false  
+      - name: maisbarato
+        in: query
+        schema: 
+          type: string
+        required: false  
+      responses:
+          200:
+            description: Sucesso
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Carros"
+          404:
+            description: Erro ao char um veiculo com esses filtros.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Erros1"
+        
+components:
+  schemas:
+    Carro:
+      type: object
+      properties:
+        chassi: 
+          type: string
+        nome: 
+          type: string
+        marca: 
+          type: string
+        cor:
+          type: string
+        valor: 
+          type: number
+        ano: 
+          type: number
+    Carros:
+      type: array
+      items:
+        $ref: "#/components/schemas/Carro"
+    Erros1:
+      type: object
+      properties:
+        timetamp:
+          type: string
+        status:
+          type: number
+        error:
+          type: string
+        trace:
+          type: string  
