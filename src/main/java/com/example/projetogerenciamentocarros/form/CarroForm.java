@@ -4,7 +4,7 @@ import com.example.projetogerenciamentocarros.errors.ErrorToAddValues;
 import com.example.projetogerenciamentocarros.model.Carro;
 import com.example.projetogerenciamentocarros.repository.CarroRepository;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class CarroForm {      //Formulario para adiconar um carro no banco.
@@ -21,7 +21,10 @@ public class CarroForm {      //Formulario para adiconar um carro no banco.
     @NotBlank(message = "cor nao pode ser nulo ou vazio")
     private String cor;
 
+    @NotNull
     private BigDecimal valor;
+
+    @NotNull
     private BigDecimal ano;
 
     public String getChassi() {
