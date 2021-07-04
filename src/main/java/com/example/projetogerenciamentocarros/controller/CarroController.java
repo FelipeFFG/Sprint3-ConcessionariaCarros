@@ -28,16 +28,6 @@ public class CarroController {
     @Autowired
     private CarroRepository carroRepository;
 
-    @PostMapping("/cars/individual")            //metodo post para adicionar apenas um carros.
-    @Transactional
-    public ResponseEntity<?> cadastrar(@Valid @RequestBody CarroForm form) {
-        Carro carro = form.coverter(carroRepository);
-        carroRepository.save(carro);
-        List<Carro> carros = new ArrayList<>();
-        carros.add(carro);
-        return new ResponseEntity<>(CarroDto.converter(carros), HttpStatus.OK);
-
-    }
 
     @PostMapping("/cars")                      //metodo post para adicionar uma lista de carros.
     @Transactional
@@ -59,44 +49,41 @@ public class CarroController {
     public ResponseEntity<?> filtro(@RequestParam(value = "marca", required = false) String marca, //Filtrar por marca.
                                     @RequestParam(value = "nome", required = false) String nome,   //Filtrar por nome.
                                     @RequestParam(value = "cor", required = false) String cor,     //Filtrar por cor.
-                                    @RequestParam(value = "maiscaro",required = false)String maiscaro,
-                                    @RequestParam(value = "maisbarato",required = false)String maisbarato,
+                                    @RequestParam(value = "maiscaro", required = false) String maiscaro,
+                                    @RequestParam(value = "maisbarato", required = false) String maisbarato,
                                     Pageable pageable) {
-        if (marca == null & nome == null & cor == null      & maiscaro ==null & maisbarato==null) {    //MARCA NOME COR    -Paremetros nulos retornal todos os valores.
+        if (marca == null & nome == null & cor == null & maiscaro == null & maisbarato == null) {    //MARCA NOME COR    -Paremetros nulos retornal todos os valores.
             Page<Carro> carro = carroRepository.findAll(pageable);
             return check(carro);
-        } else if (marca != null & nome == null & cor == null      & maiscaro ==null & maisbarato==null) {  //MARCA    -filtra por marca
+        } else if (marca != null & nome == null & cor == null & maiscaro == null & maisbarato == null) {  //MARCA    -filtra por marca
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))), pageable);
             return check(carro);
-        } else if (marca != null & nome != null & cor == null      & maiscaro ==null & maisbarato==null) {  //MARCA & NOME
+        } else if (marca != null & nome != null & cor == null & maiscaro == null & maisbarato == null) {  //MARCA & NOME
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)), pageable);
             return check(carro);
-        } else if (marca == null & nome != null & cor == null      & maiscaro ==null & maisbarato==null) {  //NOME
+        } else if (marca == null & nome != null & cor == null & maiscaro == null & maisbarato == null) {  //NOME
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))), pageable);
             return check(carro);
-        } else if (marca == null & nome != null & cor != null      & maiscaro ==null & maisbarato==null) {  //NOME COR
+        } else if (marca == null & nome != null & cor != null & maiscaro == null & maisbarato == null) {  //NOME COR
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.nome(nome))).and(SpecificationCarro.cor(cor)), pageable);
             return check(carro);
-        } else if (marca == null & nome == null & cor != null      & maiscaro ==null & maisbarato==null) {  //COR
+        } else if (marca == null & nome == null & cor != null & maiscaro == null & maisbarato == null) {  //COR
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.cor(cor))), pageable);
             return check(carro);
-        } else if (marca != null & nome == null & cor != null      & maiscaro ==null & maisbarato==null) {  //COR & MARCA
+        } else if (marca != null & nome == null & cor != null & maiscaro == null & maisbarato == null) {  //COR & MARCA
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.cor(cor)), pageable);
             return check(carro);
-        } else if (marca != null & nome != null & cor != null      & maiscaro ==null & maisbarato==null) {  //MARCA COR E NOME
+        } else if (marca != null & nome != null & cor != null & maiscaro == null & maisbarato == null) {  //MARCA COR E NOME
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)).and(SpecificationCarro.cor(cor)), pageable);
             return check(carro);
-        } else if (marca != null & nome != null & cor != null      & maiscaro ==null & maisbarato==null) {  //MARCA COR E NOME
+        } else if (marca != null & nome != null & cor != null & maiscaro == null & maisbarato == null) {  //MARCA COR E NOME
             Page<Carro> carro = carroRepository.findAll(Specification.where((SpecificationCarro.marca(marca))).and(SpecificationCarro.nome(nome)).and(SpecificationCarro.cor(cor)), pageable);
             return check(carro);
-        }
-        else if (maiscaro!=null & marca == null & nome == null & cor == null & maisbarato==null) {  //MAIS CARO
+        } else if (maiscaro != null & marca == null & nome == null & cor == null & maisbarato == null) {  //MAIS CARO
             return convert(maiscaro());
-        }
-        else if (maiscaro==null & marca == null & nome == null & cor == null & maisbarato!=null) {  //MAIS BARATO
+        } else if (maiscaro == null & marca == null & nome == null & cor == null & maisbarato != null) {  //MAIS BARATO
             return convert(maisbarato());
         }
-
         throw new ErrorToFoundValues("Nao foi possivel achar nenhum carro com esses filtro");
     }
 
@@ -128,7 +115,7 @@ public class CarroController {
         return CarroDto.converter(carro);
     }
 
-    public ResponseEntity<?> convert(List<CarroDto> carroDtos){
+    public ResponseEntity<?> convert(List<CarroDto> carroDtos) {
         return new ResponseEntity<>(carroDtos, HttpStatus.OK);
     }
 }
